@@ -27,8 +27,8 @@ public class MCWindow extends JPanel{
         int w = getWidth();
         int h = getHeight();
         System.out.println(h);
-        cities.add(new City(w/5,200, w/192));
-        cities.add(new City(w/5 + w/12, 200, w/192));
+        cities.add(new City(w/5, h - (h/10) - (w/24), w/192));
+        cities.add(new City(w/5 + w/12,  h - (h/10) - (w/24), w/192));
     }
 
     @Override
