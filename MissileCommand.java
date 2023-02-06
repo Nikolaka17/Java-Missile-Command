@@ -37,5 +37,7 @@ public class MissileCommand {
         window.setSize(800, 600);
         window.setLocationRelativeTo(null);
         window.setVisible(true);
+
+        panel.setup();
     }
 }
