@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class MCWindow extends JPanel{
     private ArrayList<City> cities = new ArrayList<City>();
-    private int[] missiles = new int[]{10, 10, 10};
+    private int[] missileCounts = new int[]{10, 10, 10};
     
     public MCWindow(){
         super();
@@ -18,7 +18,7 @@ public class MCWindow extends JPanel{
     }
 
     public void setup(){
-        missiles = new int[]{10, 10, 10};
+        missileCounts = new int[]{10, 10, 10};
         if(cities.size() != 0){
             for(City c: cities){
                 cities.remove(c);
@@ -29,6 +29,10 @@ public class MCWindow extends JPanel{
         System.out.println(h);
         cities.add(new City(w/5, h - (h/10) - (w/24), w/192));
         cities.add(new City(w/5 + w/12,  h - (h/10) - (w/24), w/192));
+        cities.add(new City(w/5 + w/6, h - (h/10) - (w/24), w/192));
+        cities.add(new City(3*w/5, h - (h/10) - (w/24), w/192));
+        cities.add(new City(3*w/5 + w/12, h - (h/10) - (w/24), w/192));
+        cities.add(new City(3*w/5 + w/6, h - (h/10) - (w/24), w/192));
     }
 
     @Override
@@ -38,7 +42,7 @@ public class MCWindow extends JPanel{
 
         int w = getWidth();
         int h = getHeight();
-        setup();
+        //setup();
         
         g2.drawImage(new ImageIcon("missile.jpg").getImage(), 0, 0, w, h, null);
         
