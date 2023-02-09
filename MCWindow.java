@@ -5,12 +5,13 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Color;
 import java.awt.Polygon;
+import java.awt.Font;
 
 import java.util.ArrayList;
 
 public class MCWindow extends JPanel{
     private ArrayList<City> cities = new ArrayList<City>();
-    private int[] missileCounts = new int[]{10, 10, 10};
+    private int[] missileCount = new int[]{10, 10, 10};
     
     public MCWindow(){
         super();
@@ -18,7 +19,7 @@ public class MCWindow extends JPanel{
     }
 
     public void setup(){
-        missileCounts = new int[]{10, 10, 10};
+        missileCount = new int[]{10, 10, 10};
         if(cities.size() != 0){
             for(City c: cities){
                 cities.remove(c);
@@ -54,5 +55,11 @@ public class MCWindow extends JPanel{
         for(City c: cities){
             g2.fill(c);
         }
+        
+        g2.setFont(new Font("Comic Sans", Font.BOLD, w/20));
+        g2.drawString(Integer.toString(missileCount[0]), offsets[0][3], h-(h/8));
+        g2.drawString(Integer.toString(missileCount[1]), offsets[0][7], h-(h/8));
+        g2.drawString(Integer.toString(missileCount[2]), offsets[0][11], h-(h/8));
+        
     }
 }
