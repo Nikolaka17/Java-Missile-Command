@@ -27,10 +27,11 @@ public class Missile extends Polygon{
         int dy = (int)(velocity * Math.cos(heading));
         
         translate(dx, dy);
+        heading = Math.atan2((double)(target.getY() - ypoints[6]),(double)(target.getX() - xpoints[6]));
     }
     
     public Point getHead(){
-        return new Point(xpoints[6], ypoints[6]);
+        return new Point(xpoints[7], ypoints[7]);
     }
     
     public double getHeading(){
@@ -39,5 +40,13 @@ public class Missile extends Polygon{
     
     public Point getTarget(){
         return target;
+    }
+    
+    public boolean atTarget(){
+        return contains(target.getX(), target.getY());
+    }
+    
+    public Point getTail(){
+        return new Point(xpoints[1], ypoints[1]);
     }
 }
