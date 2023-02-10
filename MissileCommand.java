@@ -1,36 +1,16 @@
 import javax.swing.JFrame;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseEvent;
+import javax.swing.Timer;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class MissileCommand {
     
     public static void main(String[] args){
         JFrame window = new JFrame();
         MCWindow panel = new MCWindow();
-
-        window.addMouseListener(new MouseListener(){
-            @Override
-            public void mouseClicked(MouseEvent me){
-                System.out.println("(" + me.getX() + ", "+ me.getY() + ")");
-            }
-
-            @Override
-            public void mousePressed(MouseEvent me) {
-                
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent me){
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent me){
-            }
-
-            @Override
-            public void mouseExited(MouseEvent me){
-            }
-        });
+        Timer onTick = new Timer(1000, new ActionListener(){@Override public void actionPerformed(ActionEvent e){panel.update();}});
+        
         window.add(panel);
 
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -39,5 +19,6 @@ public class MissileCommand {
         window.setVisible(true);
 
         panel.setup();
+        onTick.start();
     }
 }
