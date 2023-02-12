@@ -40,6 +40,10 @@ public class MCWindow extends JPanel{
         
     }
 
+    public void shoot(int x, int y){
+
+    }
+
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
