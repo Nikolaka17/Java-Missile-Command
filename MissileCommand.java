@@ -1,8 +1,7 @@
-import javax.swing.JFrame;
-import javax.swing.Timer;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseEvent;
 
 public class MissileCommand {
     
@@ -12,6 +11,7 @@ public class MissileCommand {
         Timer onTick = new Timer(1000, new ActionListener(){@Override public void actionPerformed(ActionEvent e){panel.update();}});
         
         window.add(panel);
+        window.addMouseListener(new MouseListener(){@Override public void mouseClicked(MouseEvent e){panel.shoot(e.getX(), e.getY());}@Override public void mousePressed(MouseEvent e){}@Override public void mouseReleased(MouseEvent e){}@Override public void mouseEntered(MouseEvent e){}@Override public void mouseExited(MouseEvent e){}});
 
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setSize(800, 600);
