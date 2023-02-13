@@ -37,10 +37,20 @@ public class MCWindow extends JPanel{
     }
     
     public void update(){
-        
+        for(Missile m: activeMissiles){
+            m.move();
+            if(m.atTarget()){
+                explode((int) m.getHead().getX(), (int) m.getHead().getY());
+                activeMissiles.remove(m);
+            }
+        }
     }
 
     public void shoot(int x, int y){
+
+    }
+
+    public void explode(int x, int y){
 
     }
 
