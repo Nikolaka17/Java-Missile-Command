@@ -13,6 +13,7 @@ public class MCWindow extends JPanel{
     private ArrayList<City> cities = new ArrayList<City>();
     private int[] missileCount = new int[]{10, 10, 10};
     private ArrayList<Missile> activeMissiles = new ArrayList<Missile>();
+    private ArrayList<Explosion> activeExplosions = new ArrayList<Explosion>();
     
     public MCWindow(){
         super();
@@ -44,6 +45,24 @@ public class MCWindow extends JPanel{
                 activeMissiles.remove(m);
             }
         }
+
+        for(Explosion e: activeExplosions){
+            if(e.grow()){
+                activeExplosions.remove(e);
+            }else{
+                for(Missile m: activeMissiles){
+                    if(e.contains(m.getHead().getX(), m.getHead().getY())){
+                        explode((int) m.getHead().getX(), (int) m.getHead().getY());
+                        activeMissiles.remove(m);
+                    }
+                }
+                for(City c: cities){
+                    if(e.contains(c.getHead().getX(), c.getHead().getY())){
+                        cities.remove(c);
+                    }
+                }
+            }
+        }
     }
 
     public void shoot(int x, int y){
@@ -51,7 +70,7 @@ public class MCWindow extends JPanel{
     }
 
     public void explode(int x, int y){
-
+        activeExplosions.add(new Explosion(x, y, 5));
     }
 
     @Override
@@ -89,5 +108,10 @@ public class MCWindow extends JPanel{
         g2.drawImage(new ImageIcon("shooter.png").getImage(), offsets[0][3], h-(h/4), w/20, h/25, null);
         g2.drawImage(new ImageIcon("shooter.png").getImage(), offsets[0][7], h-(h/4), w/20, h/25, null);
         g2.drawImage(new ImageIcon("shooter.png").getImage(), offsets[0][11], h-(h/4), w/20, h/25, null);
+
+        g2.setColor(Color.PINK);
+        for(Explosion e: activeExplosions){
+            g2.fill(e);
+        }
     }
 }
