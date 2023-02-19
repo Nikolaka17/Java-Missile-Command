@@ -1,11 +1,9 @@
 import java.awt.Polygon;
+import java.awt.Point;
 
 public class City extends Polygon{
     
-    private int length;
-    
     public City(int x, int y, int l){
-        length = l;
         npoints = 18;
         ypoints = new int[npoints];
         xpoints = new int[npoints];
@@ -16,5 +14,9 @@ public class City extends Polygon{
             xpoints[i] = x + (l * offsets[i][0]);
             ypoints[i] = y + (l * offsets[i][1]);
         }
+    }
+
+    public Point getHead(){
+        return new Point(xpoints[6], ypoints[6]);
     }
 }
