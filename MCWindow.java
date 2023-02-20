@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Color;
 import java.awt.Polygon;
 import java.awt.Font;
+import java.awt.Point;
 
 import java.util.ArrayList;
 
@@ -63,10 +64,42 @@ public class MCWindow extends JPanel{
                 }
             }
         }
+
+        repaint();
     }
 
     public void shoot(int x, int y){
-
+        int w = getWidth();
+        int h = getHeight();
+        int section = x / (w / 3);
+        if(section == 3){
+            section--;
+        }
+        if(missileCount[0] == 0 && missileCount[1] == 0 && missileCount[2] == 0){
+            return;
+        }
+        if(missileCount[section] < 1){
+            switch(section){
+                case 0:
+                    section = (missileCount[1] == 0)? 2:1;
+                    break;
+                case 1:
+                    if(missileCount[0] == 0){
+                        section = 2;
+                    }else if(missileCount[2] == 0){
+                        section = 0;
+                    }else{
+                        section = (x / (w / 2) == 0)?0:2;
+                    }
+                    break;
+                case 2:
+                    section = (missileCount[1] == 0)? 0:1;
+                    break;
+            }
+        }
+        Point[] shooterLocations = new Point[]{new Point(w/10, h-(h/4)), new Point(w/2, h-(h/4)), new Point(18*w/20, h-(h/4))};
+        missileCount[section]--;
+        activeMissiles.add(new Missile((int)shooterLocations[section].getX(), (int)shooterLocations[section].getY(), 5, 5, new Point(x, y)));
     }
 
     public void explode(int x, int y){
