@@ -99,7 +99,7 @@ public class MCWindow extends JPanel{
         }
         Point[] shooterLocations = new Point[]{new Point(w/10, h-(h/4)), new Point(w/2, h-(h/4)), new Point(18*w/20, h-(h/4))};
         missileCount[section]--;
-        activeMissiles.add(new Missile((int)shooterLocations[section].getX(), (int)shooterLocations[section].getY(), 5, 5, new Point(x, y)));
+        activeMissiles.add(new Missile((int)shooterLocations[section].getX(), (int)shooterLocations[section].getY(), 10, 1, new Point(x, y)));
     }
 
     public void explode(int x, int y){
@@ -113,7 +113,6 @@ public class MCWindow extends JPanel{
 
         int w = getWidth();
         int h = getHeight();
-        //setup();
         
         g2.drawImage(new ImageIcon("background.jpg").getImage(), 0, 0, w, h, null);
         
