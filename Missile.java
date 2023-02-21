@@ -25,8 +25,10 @@ public class Missile extends Polygon{
     public void move(){
         int dx = (int)(velocity * Math.sin(heading));
         int dy = (int)(velocity * Math.cos(heading));
-        
+        System.out.println("Flag");
+        System.out.println(dx + " " + dy);
         translate(dx, dy);
+        this.invalidate();
         heading = Math.atan2((double)(target.getY() - ypoints[6]),(double)(target.getX() - xpoints[6]));
     }
     
