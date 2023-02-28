@@ -12,11 +12,35 @@ public class Missile extends Polygon{
         xpoints = new int[npoints];
         ypoints = new int[npoints];
         
-        int[][] offsets = new int[][]{{0,0}, {1,0}, {2,0}, {2,1}, {2,2}, {2,3}, {1,3}, {0,3}, {0,2}, {0,1}};
-        for(int i = 0; i < npoints; i++){
-            xpoints[i] = x + (offsets[i][0] * l);
-            ypoints[i] = y + (offsets[i][0] * l);
-        }
+        xpoints[0] = x;
+        ypoints[0] = y;
+        
+        xpoints[1] = x + l;
+        ypoints[1] = y;
+        
+        xpoints[2] = x + (2 * l);
+        ypoints[2] = y;
+        
+        xpoints[3] = x + (2 * l);
+        ypoints[3] = y + l;
+        
+        xpoints[4] = x + (2 * l);
+        ypoints[4] = y + (2 * l);
+        
+        xpoints[5] = x + (2 * l);
+        ypoints[5] = y + (3 * l);
+        
+        xpoints[6] = x + l;
+        ypoints[6] = y + (3 * l);
+        
+        xpoints[7] = x;
+        ypoints[7] = y + (3 * l);
+        
+        xpoints[8] = x;
+        ypoints[8] = y + (2 * l);
+        
+        xpoints[9] = x;
+        ypoints[9] = y + l;
         
         heading = Math.atan2((double)(target.getY() - ypoints[6]),(double)(target.getX() - xpoints[6]));
         velocity = v;
@@ -25,15 +49,13 @@ public class Missile extends Polygon{
     public void move(){
         int dx = (int)(velocity * Math.sin(heading));
         int dy = (int)(velocity * Math.cos(heading));
-        System.out.println("Flag");
-        System.out.println(dx + " " + dy);
-        translate(dx, dy);
+        translate(dy, dx);
         this.invalidate();
         heading = Math.atan2((double)(target.getY() - ypoints[6]),(double)(target.getX() - xpoints[6]));
     }
     
     public Point getHead(){
-        return new Point(xpoints[7], ypoints[7]);
+        return new Point(xpoints[8], ypoints[8]);
     }
     
     public double getHeading(){
