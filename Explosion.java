@@ -4,8 +4,8 @@ public class Explosion extends Ellipse2D.Double{
     private int iterNum = 0;
     
     public Explosion(int x, int y, int r){
-        this.x = x + r;
-        this.y = y + r;
+        this.x = x - r;
+        this.y = y - r;
         this.height = r + r;
         this.width = r + r;
     }
