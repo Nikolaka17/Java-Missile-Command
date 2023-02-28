@@ -39,15 +39,15 @@ public class MCWindow extends JPanel{
     }
     
     public void update(){
-        for(Missile m: activeMissiles){
-            m.move();
-            if(m.atTarget()){
-                explode((int) m.getHead().getX(), (int) m.getHead().getY());
-                activeMissiles.remove(m);
+        for(int i = 0; i < activeMissiles.size(); i++){
+            activeMissiles.get(i).move();
+            if(activeMissiles.get(i).atTarget()){
+                explode((int) activeMissiles.get(i).getTarget().getX(), (int) activeMissiles.get(i).getTarget().getY());
+                activeMissiles.remove(i);
             }
         }
-
-        for(Explosion e: activeExplosions){
+        
+        /*for(Explosion e: activeExplosions){
             if(e.grow()){
                 activeExplosions.remove(e);
             }else{
@@ -63,7 +63,8 @@ public class MCWindow extends JPanel{
                     }
                 }
             }
-        }
+        }*/
+        
 
         repaint();
     }
@@ -99,7 +100,7 @@ public class MCWindow extends JPanel{
         }
         Point[] shooterLocations = new Point[]{new Point(w/10, h-(h/4)), new Point(w/2, h-(h/4)), new Point(18*w/20, h-(h/4))};
         missileCount[section]--;
-        activeMissiles.add(new Missile((int)shooterLocations[section].getX(), (int)shooterLocations[section].getY(), 10, 1, new Point(x, y)));
+        activeMissiles.add(new Missile((int)shooterLocations[section].getX(), (int)shooterLocations[section].getY(), 10, 10, new Point(x, y)));
     }
 
     public void explode(int x, int y){
@@ -132,9 +133,9 @@ public class MCWindow extends JPanel{
         
         g2.setColor(Color.WHITE);
         for(Missile m: activeMissiles){
-            g2.rotate(m.getHeading(), m.getTail().getX(), m.getTail().getY());
+            //g2.rotate(m.getHeading(), m.getTail().getX(), m.getTail().getY());
             g2.fill(m);
-            g2.rotate(-m.getHeading(), m.getTail().getX(), m.getTail().getY());
+            //g2.rotate(-m.getHeading(), m.getTail().getX(), m.getTail().getY());
         }
         
         g2.drawImage(new ImageIcon("shooter.png").getImage(), offsets[0][3], h-(h/4), w/20, h/25, null);
