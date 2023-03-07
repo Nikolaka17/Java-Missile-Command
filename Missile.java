@@ -64,7 +64,7 @@ public class Missile extends Polygon{
     }
     
     public Point getHead(){
-        return new Point(xpoints[8], ypoints[8]);
+        return new Point(xpoints[6], ypoints[6]);
     }
     
     public double getHeading(){
