@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Polygon;
 import java.awt.Font;
 import java.awt.Point;
+import java.awt.Rectangle;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -143,6 +144,9 @@ public class MCWindow extends JPanel{
         for(Missile m: activeMissiles){
             //g2.rotate(m.getHeading(), m.getTail().getX(), m.getTail().getY());
             g2.fill(m);
+            for(Rectangle r: m.getPath().spots){
+                g2.fill(r);
+            }
             //g2.rotate(-m.getHeading(), m.getTail().getX(), m.getTail().getY());
         }
         
