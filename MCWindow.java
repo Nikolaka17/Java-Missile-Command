@@ -9,6 +9,7 @@ import java.awt.Font;
 import java.awt.Point;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class MCWindow extends JPanel{
     private ArrayList<City> cities = new ArrayList<City>();
@@ -39,32 +40,39 @@ public class MCWindow extends JPanel{
     }
     
     public void update(){
-        for(int i = 0; i < activeMissiles.size(); i++){
-            activeMissiles.get(i).move();
-            if(activeMissiles.get(i).atTarget()){
-                explode((int) activeMissiles.get(i).getTarget().getX(), (int) activeMissiles.get(i).getTarget().getY());
-                activeMissiles.remove(i);
+        Iterator<Missile> mit = activeMissiles.iterator();
+        while(mit.hasNext()){
+            Missile m = mit.next();
+            m.move();
+            if(m.atTarget()){
+                explode((int) m.getTarget().getX(), (int) m.getTarget().getY());
+                mit.remove();
             }
         }
         
-        /*for(Explosion e: activeExplosions){
+        Iterator<Explosion> eit = activeExplosions.iterator();
+        while(eit.hasNext()){
+            Explosion e = eit.next();
             if(e.grow()){
-                activeExplosions.remove(e);
+                eit.remove();
             }else{
-                for(Missile m: activeMissiles){
+                mit = activeMissiles.iterator();
+                while(mit.hasNext()){
+                    Missile m = mit.next();
                     if(e.contains(m.getHead().getX(), m.getHead().getY())){
                         explode((int) m.getHead().getX(), (int) m.getHead().getY());
-                        activeMissiles.remove(m);
+                        mit.remove();
                     }
                 }
-                for(City c: cities){
+                Iterator<City> cit = cities.iterator();
+                while(cit.hasNext()){
+                    City c = cit.next();
                     if(e.contains(c.getHead().getX(), c.getHead().getY())){
-                        cities.remove(c);
+                        cit.remove();
                     }
                 }
             }
-        }*/
-        
+        }
 
         repaint();
     }
