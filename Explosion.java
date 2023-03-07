@@ -13,8 +13,10 @@ public class Explosion extends Ellipse2D.Double{
     public boolean grow(){
         height += 10;
         width += 10;
+        x -= 10;
+        y -= 10;
         iterNum++;
-        return iterNum < 10;
+        return iterNum > 5;
     }
 
     @Override
