@@ -48,6 +48,15 @@ public class MCWindow extends JPanel{
             if(m.atTarget()){
                 explode((int) m.getTarget().getX(), (int) m.getTarget().getY());
                 mit.remove();
+            }else{
+                Iterator<Explosion> eit2 = activeExplosions.iterator();
+                while(eit2.hasNext()){
+                    Explosion e = eit2.next();
+                    if(e.contains(m.getHead().getX(), m.getHead().getY())){
+                        explode((int) m.getHead().getX(), (int) m.getHead().getY());
+                        mit.remove();
+                    }
+                }
             }
         }
         
@@ -57,14 +66,6 @@ public class MCWindow extends JPanel{
             if(e.grow()){
                 eit.remove();
             }else{
-                mit = activeMissiles.iterator();
-                while(mit.hasNext()){
-                    Missile m = mit.next();
-                    if(e.contains(m.getHead().getX(), m.getHead().getY())){
-                        explode((int) m.getHead().getX(), (int) m.getHead().getY());
-                        mit.remove();
-                    }
-                }
                 Iterator<City> cit = cities.iterator();
                 while(cit.hasNext()){
                     City c = cit.next();
