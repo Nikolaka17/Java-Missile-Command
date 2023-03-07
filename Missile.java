@@ -1,11 +1,13 @@
 import java.awt.Polygon;
 import java.awt.Point;
+import java.awt.Rectangle;
+import java.util.ArrayList;
 
 public class Missile extends Polygon{
     private Point target;
     private double heading;
     private int velocity;
-    private Trail path;
+    public ArrayList<Rectangle> spots;
     
     public Missile(int x, int y, int l, int v, Point t){
         target = t;
@@ -45,16 +47,20 @@ public class Missile extends Polygon{
         
         heading = Math.atan2((double)(target.getY() - ypoints[6]),(double)(target.getX() - xpoints[6]));
         velocity = v;
-        path = new Trail();
+        spots = new ArrayList<Rectangle>();
     }
     
     public void move(){
         int dx = (int)(velocity * Math.sin(heading));
         int dy = (int)(velocity * Math.cos(heading));
-        path.add((int)getHead().getX(), (int)getHead().getY());
+        add((int)getHead().getX(), (int)getHead().getY());
         translate(dy, dx);
         this.invalidate();
         heading = Math.atan2((double)(target.getY() - ypoints[6]),(double)(target.getX() - xpoints[6]));
+    }
+
+    public void add(int x, int y){
+        spots.add(new Rectangle(x, y, 5, 5));
     }
     
     public Point getHead(){
@@ -75,9 +81,5 @@ public class Missile extends Polygon{
     
     public Point getTail(){
         return new Point(xpoints[1], ypoints[1]);
-    }
-    
-    public Trail getPath(){
-        return path;
     }
 }
