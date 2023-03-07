@@ -145,7 +145,7 @@ public class MCWindow extends JPanel{
         for(Missile m: activeMissiles){
             //g2.rotate(m.getHeading(), m.getTail().getX(), m.getTail().getY());
             g2.fill(m);
-            for(Rectangle r: m.getPath().spots){
+            for(Rectangle r: m.spots){
                 g2.fill(r);
             }
             //g2.rotate(-m.getHeading(), m.getTail().getX(), m.getTail().getY());
