@@ -18,6 +18,8 @@ public class MCWindow extends JPanel{
     private ArrayList<Missile> activeMissiles = new ArrayList<Missile>();
     private ArrayList<Explosion> activeExplosions = new ArrayList<Explosion>();
     private int score;
+    private SoundEffect explosionSound = new SoundEffect("explosion_sound.wav");
+    private SoundEffect shootingSound = new SoundEffect("shooting_sound.wav");
     
     public MCWindow(){
         super();
@@ -125,10 +127,12 @@ public class MCWindow extends JPanel{
         Point[] shooterLocations = new Point[]{new Point(w/10, h-(h/4)), new Point(w/2, h-(h/4)), new Point(18*w/20, h-(h/4))};
         missileCount[section]--;
         activeMissiles.add(new Missile((int)shooterLocations[section].getX(), (int)shooterLocations[section].getY(), 10, 10, new Point(x, y)));
+        shootingSound.play();
     }
 
     public void explode(int x, int y){
         activeExplosions.add(new Explosion(x, y, 10));
+        explosionSound.play();
     }
 
     @Override
