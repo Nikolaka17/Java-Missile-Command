@@ -17,14 +17,20 @@ public class MCWindow extends JPanel{
     private int[] missileCount = new int[]{10, 10, 10};
     private ArrayList<Missile> activeMissiles = new ArrayList<Missile>();
     private ArrayList<Explosion> activeExplosions = new ArrayList<Explosion>();
+    private int score;
     
     public MCWindow(){
         super();
         setBackground(Color.BLACK);
     }
 
+    public int getScore(){
+        return score;
+    }
+
     public void setup(){
         missileCount = new int[]{10, 10, 10};
+        score = 0;
         if(cities.size() != 0){
             for(City c: cities){
                 cities.remove(c);
@@ -53,6 +59,14 @@ public class MCWindow extends JPanel{
                 while(eit2.hasNext()){
                     Explosion e = eit2.next();
                     if(e.contains(m.getHead().getX(), m.getHead().getY())){
+                        if(m.isEnemy()){
+                            score += 100;
+                            if(score % 1000 == 0){
+                                missileCount[0] = 10;
+                                missileCount[1] = 10;
+                                missileCount[2] = 10;
+                            }
+                        }
                         explode((int) m.getHead().getX(), (int) m.getHead().getY());
                         mit.remove();
                     }
@@ -114,7 +128,7 @@ public class MCWindow extends JPanel{
     }
 
     public void explode(int x, int y){
-        activeExplosions.add(new Explosion(x, y, 5));
+        activeExplosions.add(new Explosion(x, y, 10));
     }
 
     @Override
@@ -143,13 +157,14 @@ public class MCWindow extends JPanel{
         
         g2.setColor(Color.WHITE);
         for(Missile m: activeMissiles){
-            //g2.rotate(m.getHeading(), m.getTail().getX(), m.getTail().getY());
+            g2.rotate((Math.PI/2) + m.getHeading(), m.getCenterX(), m.getCenterY());
             g2.fill(m);
+            g2.rotate(-(Math.PI/2) -m.getHeading(), m.getCenterX(), m.getCenterY());
             for(Rectangle r: m.spots){
                 g2.fill(r);
             }
-            //g2.rotate(-m.getHeading(), m.getTail().getX(), m.getTail().getY());
         }
+        g2.drawString("Score: " + Integer.toString(score), w/2 - w/10, h/20);
         
         g2.drawImage(new ImageIcon("shooter.png").getImage(), offsets[0][3], h-(h/4), w/20, h/25, null);
         g2.drawImage(new ImageIcon("shooter.png").getImage(), offsets[0][7], h-(h/4), w/20, h/25, null);
