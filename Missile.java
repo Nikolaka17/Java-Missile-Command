@@ -8,6 +8,7 @@ public class Missile extends Polygon{
     private double heading;
     private int velocity;
     public ArrayList<Rectangle> spots;
+    private boolean enemy;
     
     public Missile(int x, int y, int l, int v, Point t){
         target = t;
@@ -48,6 +49,12 @@ public class Missile extends Polygon{
         heading = Math.atan2((double)(target.getY() - ypoints[6]),(double)(target.getX() - xpoints[6]));
         velocity = v;
         spots = new ArrayList<Rectangle>();
+        enemy = false;
+    }
+
+    public Missile(int x, int y, int l, int v, Point t, boolean e){
+        this(x, y, l, v, t);
+        enemy = e;
     }
     
     public void move(){
@@ -81,5 +88,17 @@ public class Missile extends Polygon{
     
     public Point getTail(){
         return new Point(xpoints[1], ypoints[1]);
+    }
+
+    public int getCenterX(){
+        return xpoints[2] - ((xpoints[2] - xpoints[0])/2);
+    }
+
+    public int getCenterY(){
+        return ypoints[7] - ((ypoints[7] - ypoints[0])/2);
+    }
+
+    public boolean isEnemy(){
+        return enemy;
     }
 }
