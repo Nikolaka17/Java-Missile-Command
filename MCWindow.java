@@ -78,6 +78,8 @@ public class MCWindow extends JPanel{
                         }
                         explode((int) m.getHead().getX(), (int) m.getHead().getY());
                         mit.remove();
+                        //Break to stop comparison of removed missile
+                        break;
                     }
                 }
             }
@@ -134,12 +136,12 @@ public class MCWindow extends JPanel{
         Point[] shooterLocations = new Point[]{new Point(w/10, h-(h/4)), new Point(w/2, h-(h/4)), new Point(18*w/20, h-(h/4))};
         missileCount[section]--;
         activeMissiles.add(new Missile((int)shooterLocations[section].getX(), (int)shooterLocations[section].getY(), 10, 5, new Point(x, y)));
-        shootingSound.play();
+        //shootingSound.play();
     }
 
     public void explode(int x, int y){
         activeExplosions.add(new Explosion(x, y, 10));
-        explosionSound.play();
+        //explosionSound.play();
     }
 
     public void spawnEnemy(){
