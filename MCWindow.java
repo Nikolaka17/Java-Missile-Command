@@ -37,7 +37,7 @@ public class MCWindow extends JPanel{
     public void setup(){
         missileCount = new int[]{10, 10, 10};
         score = 0;
-        enemySpeed = 5;
+        enemySpeed = 3;
         rng = new Random();
         stopped = false;
         cities.clear();
@@ -143,7 +143,7 @@ public class MCWindow extends JPanel{
     }
 
     public void spawnEnemy(){
-        if(rng.nextInt(20) > 8 - Math.floor((double) score / 1000)){
+        if(rng.nextInt(20) > 15 - Math.floor((double) score / 1000)){
             activeMissiles.add(new Missile(rng.nextInt(getWidth()), 0, 10, enemySpeed, cities.get(rng.nextInt(cities.size())).getHead(), true));
         }
     }
