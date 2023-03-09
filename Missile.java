@@ -63,7 +63,7 @@ public class Missile extends Polygon{
         int dx = (int)(velocity * Math.sin(heading));
         int dy = (int)(velocity * Math.cos(heading));
         iter++;
-        if(iter % 3 == 0){
+        if(iter % 5 == 0){
             add((int)getHead().getX(), (int)getHead().getY());
         }
         translate(dy, dx);
