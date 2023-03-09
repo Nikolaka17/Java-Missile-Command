@@ -11,6 +11,7 @@ import java.awt.Rectangle;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 
 public class MCWindow extends JPanel{
     private ArrayList<City> cities = new ArrayList<City>();
@@ -18,8 +19,11 @@ public class MCWindow extends JPanel{
     private ArrayList<Missile> activeMissiles = new ArrayList<Missile>();
     private ArrayList<Explosion> activeExplosions = new ArrayList<Explosion>();
     private int score;
-    private SoundEffect explosionSound = new SoundEffect("explosion_sound.wav");
-    private SoundEffect shootingSound = new SoundEffect("shooting_sound.wav");
+    private SoundEffect explosionSound = new SoundEffect("C:/Users/Nikolas/Documents/code/Math 271/explosion_sound.wav");
+    private SoundEffect shootingSound = new SoundEffect("C:/Users/Nikolas/Documents/code/Math 271/shooting_sound.wav");
+    private Random rng;
+    private boolean stopped;
+    private int enemySpeed;
     
     public MCWindow(){
         super();
@@ -33,11 +37,13 @@ public class MCWindow extends JPanel{
     public void setup(){
         missileCount = new int[]{10, 10, 10};
         score = 0;
-        if(cities.size() != 0){
-            for(City c: cities){
-                cities.remove(c);
-            }
-        }
+        enemySpeed = 5;
+        rng = new Random();
+        stopped = false;
+        cities.clear();
+        activeMissiles.clear();
+        activeExplosions.clear();
+
         int w = getWidth();
         int h = getHeight();
         cities.add(new City(w/5, h - (h/10) - (w/24), w/192));
@@ -67,6 +73,7 @@ public class MCWindow extends JPanel{
                                 missileCount[0] = 10;
                                 missileCount[1] = 10;
                                 missileCount[2] = 10;
+                                enemySpeed++;
                             }
                         }
                         explode((int) m.getHead().getX(), (int) m.getHead().getY());
@@ -126,13 +133,27 @@ public class MCWindow extends JPanel{
         }
         Point[] shooterLocations = new Point[]{new Point(w/10, h-(h/4)), new Point(w/2, h-(h/4)), new Point(18*w/20, h-(h/4))};
         missileCount[section]--;
-        activeMissiles.add(new Missile((int)shooterLocations[section].getX(), (int)shooterLocations[section].getY(), 10, 10, new Point(x, y)));
+        activeMissiles.add(new Missile((int)shooterLocations[section].getX(), (int)shooterLocations[section].getY(), 10, 5, new Point(x, y)));
         shootingSound.play();
     }
 
     public void explode(int x, int y){
         activeExplosions.add(new Explosion(x, y, 10));
         explosionSound.play();
+    }
+
+    public void spawnEnemy(){
+        if(rng.nextInt(20) > 8 - Math.floor((double) score / 1000)){
+            activeMissiles.add(new Missile(rng.nextInt(getWidth()), 0, 10, enemySpeed, cities.get(rng.nextInt(cities.size())).getHead()));
+        }
+    }
+
+    public boolean gameOver(){
+        return cities.size() == 0 && !stopped;
+    }
+
+    public void pause(){
+        stopped = true;
     }
 
     @Override
