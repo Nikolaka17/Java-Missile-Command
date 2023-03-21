@@ -1,4 +1,5 @@
 import javax.swing.JPanel;
+
 import javax.swing.ImageIcon;
 
 import java.awt.Graphics;
@@ -19,25 +20,69 @@ public class MCWindow extends JPanel{
     private ArrayList<Missile> activeMissiles = new ArrayList<Missile>();
     private ArrayList<Explosion> activeExplosions = new ArrayList<Explosion>();
     private int score;
-    private SoundEffect explosionSound = new SoundEffect("C:/Users/Nikolas/Documents/code/Math 271/explosion_sound.wav");
-    private SoundEffect shootingSound = new SoundEffect("C:/Users/Nikolas/Documents/code/Math 271/shooting_sound.wav");
+    private static final String[] BACKGROUND_MUSIC = new String[]{"BackgroundMusic1.wav", "BackgroundMusic2.wav", "BackgroundMusic3.wav", "BackgroundMusic4.wav", "BackgroundMusic5.wav", "BackgroundMusic6.wav", "BackgroundMusic7.wav", "BackgroundMusic8.wav", "BackgroundMusic9.wav", "BackgroundMusic10.wav"};
+    private static final String[] END_SOUNDS = new String[]{"EndSound1.wav", "EndSound2.wav", "EndSound3.wav", "WinSound1.wav", "WinSound2.wav"};
+    private static final String[] EXPLOSION_SOUNDS = new String[]{"ExplosionSound.wav"};
+    private static final String[] INTRO_MUSIC = new String[]{"IntroMusic.wav"};
+    private static final String[] NUKE_SOUNDS = new String[]{"NukeSound.wav"};
+    private static final String[] PING_SOUNDS = new String[]{"PingSound1.wav", "PingSound2.wav"};
+    private static final String[] RELOAD_SOUNDS = new String[]{"ReloadSound1.wav", "ReloadSound2.wav"};
+    private static final String[] SHOOTING_SOUNDS = new String[]{"ShootingSound1.wav", "ShootingSound2.wav"};
+    private SoundEffect explosionSound = new SoundEffect("C:/Users/Nikolas/Documents/code/Math 271/res/" + EXPLOSION_SOUNDS[0]);
+    private SoundEffect shootingSound = new SoundEffect("C:/Users/Nikolas/Documents/code/Math 271/res/" + SHOOTING_SOUNDS[0]);
+    private SoundEffect nukeSound = new SoundEffect("C:/Users/Nikolas/Documents/code/Math 271/res/" + NUKE_SOUNDS[0]);
+    private SoundEffect backgroundMusic = new SoundEffect("C:/Users/Nikolas/Documents/code/Math 271/res/" + BACKGROUND_MUSIC[0]);
+    private SoundEffect introMusic = new SoundEffect("C:/Users/Nikolas/Documents/code/Math 271/res/" + INTRO_MUSIC[0]);
+    private SoundEffect endSound = new SoundEffect("C:/Users/Nikolas/Documents/code/Math 271/res/" + END_SOUNDS[0]);
+    private SoundEffect pingSound = new SoundEffect("C:/Users/Nikolas/Documents/code/Math 271/res/" + PING_SOUNDS[0]);
+    private SoundEffect reloadSound = new SoundEffect("C:/Users/Nikolas/Documents/code/Math 271/res/" + RELOAD_SOUNDS[0]);
     private Random rng;
     private boolean stopped;
     private int enemySpeed;
+    private int playerSpeed;
     
     public MCWindow(){
         super();
         setBackground(Color.BLACK);
+        backgroundMusic.play();
     }
 
     public int getScore(){
         return score;
     }
 
+    public void speedUp(){
+        playerSpeed++;
+        enemySpeed++;
+    }
+
+    public void slowDown(){
+        playerSpeed--;
+        enemySpeed--;
+    }
+
+    public void reload(){
+        reloadSound.play();
+        missileCount[0] = 10;
+        missileCount[1] = 10;
+        missileCount[2] = 10;
+    }
+
+    public void explodeAll(){
+        Iterator<Missile> mit = activeMissiles.iterator();
+        while(mit.hasNext()){
+            Missile m = mit.next();
+            explode(m.getCenterX(), m.getCenterY());
+            mit.remove();
+        }
+    }
+
     public void setup(){
+        introMusic.play();
         missileCount = new int[]{10, 10, 10};
         score = 0;
         enemySpeed = 3;
+        playerSpeed = 5;
         rng = new Random();
         stopped = false;
         cities.clear();
@@ -70,10 +115,9 @@ public class MCWindow extends JPanel{
                         if(m.isEnemy()){
                             score += 100;
                             if(score % 1000 == 0){
-                                missileCount[0] = 10;
-                                missileCount[1] = 10;
-                                missileCount[2] = 10;
+                                reload();
                                 enemySpeed++;
+                                pingSound.play();
                             }
                         }
                         explode((int) m.getHead().getX(), (int) m.getHead().getY());
@@ -135,23 +179,37 @@ public class MCWindow extends JPanel{
         }
         Point[] shooterLocations = new Point[]{new Point(w/10, h-(h/4)), new Point(w/2, h-(h/4)), new Point(18*w/20, h-(h/4))};
         missileCount[section]--;
-        activeMissiles.add(new Missile((int)shooterLocations[section].getX(), (int)shooterLocations[section].getY(), 10, 5, new Point(x, y)));
-        //shootingSound.play();
+        activeMissiles.add(new Missile((int)shooterLocations[section].getX(), (int)shooterLocations[section].getY(), 10, playerSpeed, new Point(x, y)));
+        shootingSound.play();
     }
 
     public void explode(int x, int y){
         activeExplosions.add(new Explosion(x, y, 10));
-        //explosionSound.play();
+        explosionSound.play();
     }
 
-    public void spawnEnemy(){
-        if(rng.nextInt(20) > 15 - Math.floor((double) score / 1000)){
+    public void nuke(){
+        nukeSound.play();
+        activeExplosions.add(new Explosion(500, 200, 10, 150));
+    }
+
+    public void spawnEnemy(boolean b){
+        if(b || rng.nextInt(20) > 15 - Math.floor((double) score / 1000)){
             activeMissiles.add(new Missile(rng.nextInt(getWidth()), 0, 10, enemySpeed, cities.get(rng.nextInt(cities.size())).getHead(), true));
+            shootingSound.play();
         }
     }
 
     public boolean gameOver(){
-        return cities.size() == 0 && !stopped;
+        if(cities.size() == 0 && !stopped){
+            endSound.play();
+            return true;
+        }
+        return false;
+    }
+
+    public boolean outOfMissiles(){
+        return missileCount[0] + missileCount[1] + missileCount[2] == 0;
     }
 
     public void pause(){
