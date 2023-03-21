@@ -10,6 +10,9 @@ public class Missile extends Polygon{
     public ArrayList<Rectangle> spots;
     private boolean enemy;
     private int iter;
+    private int distance;
+    private int dy;
+    private int dx;
     
     public Missile(int x, int y, int l, int v, Point t){
         target = t;
@@ -48,6 +51,9 @@ public class Missile extends Polygon{
         ypoints[9] = y + l;
         
         heading = Math.atan2((double)(target.getY() - ypoints[6]),(double)(target.getX() - xpoints[6]));
+        distance = (int)((target.getX() - xpoints[6]) * Math.cos(heading));
+        dx = (int)(velocity * Math.sin(heading));
+        dy = (int)(velocity * Math.cos(heading));
         velocity = v;
         spots = new ArrayList<Rectangle>();
         enemy = false;
@@ -60,15 +66,20 @@ public class Missile extends Polygon{
     }
     
     public void move(){
-        int dx = (int)(velocity * Math.sin(heading));
-        int dy = (int)(velocity * Math.cos(heading));
+        dx = (int)(velocity * Math.sin(heading));
+        dy = (int)(velocity * Math.cos(heading));
         iter++;
         if(iter % 5 == 0){
-            add((int)getHead().getX(), (int)getHead().getY());
+            if(enemy){
+                add((int)getTail().getX(), (int)getTail().getY());
+            }else{
+                add((int)getHead().getX(), (int)getHead().getY());
+            }
         }
         translate(dy, dx);
         this.invalidate();
         heading = Math.atan2((double)(target.getY() - ypoints[6]),(double)(target.getX() - xpoints[6]));
+        distance = (int)((target.getX() - xpoints[6]) * Math.cos(heading));
     }
 
     public void add(int x, int y){
@@ -88,7 +99,7 @@ public class Missile extends Polygon{
     }
     
     public boolean atTarget(){
-        return contains(target.getX(), target.getY());
+        return contains(target.getX(), target.getY()) || (Math.abs(distance) <= Math.abs(dy) && Math.abs(distance) <= Math.abs(dx));
     }
     
     public Point getTail(){
