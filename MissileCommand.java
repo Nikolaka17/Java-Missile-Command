@@ -27,7 +27,7 @@ public class MissileCommand {
                     onTick.stop();
                     enemySpawner.stop();
                     panel.pause();
-                    int choice = JOptionPane.showConfirmDialog(window, "Congrats you scored: " + panel.getScore() + "\n\nRestart?", "Game Over", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, new ImageIcon("Icon.png"));
+                    int choice = JOptionPane.showConfirmDialog(window, "Congrats you scored: " + panel.getScore() + "\n\nRestart?", "Game Over", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, new ImageIcon("res/Icon.png"));
                     if(choice == JOptionPane.YES_OPTION){
                         panel.setup();
                         onTick.start();
