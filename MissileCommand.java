@@ -1,3 +1,10 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package missilecommand;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseListener;
@@ -12,7 +19,7 @@ public class MissileCommand {
     public static void main(String[] args){
         JFrame window = new JFrame();
         MCWindow panel = new MCWindow();
-        Timer onTick = new Timer(10, new ActionListener(){@Override public void actionPerformed(ActionEvent e){panel.update();}});
+        Timer onTick = new Timer(20, new ActionListener(){@Override public void actionPerformed(ActionEvent e){panel.update();}});
         Timer enemySpawner = new Timer(1000, new ActionListener(){@Override public void actionPerformed(ActionEvent e){panel.spawnEnemy();}});
         Timer winChecker = new Timer(1, new ActionListener(){
             @Override
@@ -48,4 +55,3 @@ public class MissileCommand {
         enemySpawner.start();
     }
 }
-
