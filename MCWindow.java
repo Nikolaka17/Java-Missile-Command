@@ -224,7 +224,7 @@ public class MCWindow extends JPanel{
         int w = getWidth();
         int h = getHeight();
         
-        g2.drawImage(new ImageIcon("background.jpg").getImage(), 0, 0, w, h, null);
+        g2.drawImage(new ImageIcon("res/Background.png").getImage(), 0, 0, w, h, null);
         
         g2.setColor(Color.GREEN);
         int[][] offsets = new int[][]{{0, 0, w/20, w/10, 3*w/20, w/5, 9*w/20, w/2, 11*w/20, 12*w/20, 17*w/20, 18*w/20, 19*w/20, w, w},{h, h-(h/10), h-(h/10), h-(h/5), h-(h/5), h-(h/10), h-(h/10), h-(h/5), h-(h/5), h-(h/10), h-(h/10), h-(h/5), h-(h/5), h-(h/10), h}};
@@ -251,9 +251,9 @@ public class MCWindow extends JPanel{
         }
         g2.drawString("Score: " + Integer.toString(score), w/2 - w/10, h/20);
         
-        g2.drawImage(new ImageIcon("shooter.png").getImage(), offsets[0][3], h-(h/4), w/20, h/25, null);
-        g2.drawImage(new ImageIcon("shooter.png").getImage(), offsets[0][7], h-(h/4), w/20, h/25, null);
-        g2.drawImage(new ImageIcon("shooter.png").getImage(), offsets[0][11], h-(h/4), w/20, h/25, null);
+        g2.drawImage(new ImageIcon("res/Shooter.png").getImage(), offsets[0][3], h-(h/4), w/20, h/25, null);
+        g2.drawImage(new ImageIcon("res/Shooter.png").getImage(), offsets[0][7], h-(h/4), w/20, h/25, null);
+        g2.drawImage(new ImageIcon("res/Shooter.png").getImage(), offsets[0][11], h-(h/4), w/20, h/25, null);
 
         g2.setColor(Color.PINK);
         for(Explosion e: activeExplosions){
