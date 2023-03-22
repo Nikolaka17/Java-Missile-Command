@@ -9,6 +9,9 @@ import javax.swing.JFrame;
 import javax.swing.Timer;
 import javax.swing.JOptionPane;
 
+/**
+ * Main class that runs a game of missile command
+ */
 public class MissileCommand {
     private static boolean hellfire = false;
     private static int x = 0;
@@ -27,7 +30,7 @@ public class MissileCommand {
                     onTick.stop();
                     enemySpawner.stop();
                     panel.pause();
-                    int choice = JOptionPane.showConfirmDialog(window, "Congrats you scored: " + panel.getScore() + "\n\nRestart?", "Game Over", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, new ImageIcon("res/Icon.png"));
+                    int choice = JOptionPane.showConfirmDialog(window, "Congrats you scored: " + panel.getScore() + "\n\nRestart?", "Game Over", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, new ImageIcon("C:/Users/Nikolas/Documents/code/Math 271/res/Icon.png"));
                     if(choice == JOptionPane.YES_OPTION){
                         panel.setup();
                         onTick.start();
