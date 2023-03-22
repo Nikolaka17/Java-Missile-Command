@@ -11,11 +11,17 @@ import javax.swing.JOptionPane;
 
 /**
  * Main class that runs a game of missile command
+ * @see MCWindow
+ * @see Missile
+ * @see Explosion
+ * @see City
+ * @see SoundEffect
  */
 public class MissileCommand {
     private static boolean hellfire = false;
     private static int x = 0;
     private static int y = 0;
+    private static final String[] SOUND_TYPES = new String[]{"background", "intro", "shooting", "explosion", "reload", "nuke", "ping", "win"};
     
     public static void main(String[] args){
         JFrame window = new JFrame();
@@ -86,6 +92,10 @@ public class MissileCommand {
                     case KeyEvent.VK_N:
                         System.out.println("Nuking the world");
                         panel.nuke();
+                        break;
+                    case KeyEvent.VK_1: case KeyEvent.VK_2: case KeyEvent.VK_3: case KeyEvent.VK_4: case KeyEvent.VK_5: case KeyEvent.VK_6: case KeyEvent.VK_7: case KeyEvent.VK_8:
+                        System.out.println("Switching " + SOUND_TYPES[(int)(e.getKeyChar() - '1')] + " tracks");
+                        panel.nextSound((int)(e.getKeyChar() - '1'));
                         break;
                 }
             }
