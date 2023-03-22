@@ -13,6 +13,11 @@ import java.util.Random;
 
 /**
  * Class that holds the screen of the missile command game
+ * @see MissileCommand
+ * @see Missile
+ * @see Explosion
+ * @see City
+ * @see SoundEffect
  */
 public class MCWindow extends JPanel{
     private ArrayList<City> cities = new ArrayList<City>();
@@ -28,14 +33,15 @@ public class MCWindow extends JPanel{
     private static final String[] PING_SOUNDS = new String[]{"PingSound1.wav", "PingSound2.wav"};
     private static final String[] RELOAD_SOUNDS = new String[]{"ReloadSound1.wav", "ReloadSound2.wav"};
     private static final String[] SHOOTING_SOUNDS = new String[]{"ShootingSound1.wav", "ShootingSound2.wav"};
-    private SoundEffect explosionSound = new SoundEffect("C:/Users/Nikolas/Documents/code/Math 271/res/" + EXPLOSION_SOUNDS[0]);
-    private SoundEffect shootingSound = new SoundEffect("C:/Users/Nikolas/Documents/code/Math 271/res/" + SHOOTING_SOUNDS[0]);
-    private SoundEffect nukeSound = new SoundEffect("C:/Users/Nikolas/Documents/code/Math 271/res/" + NUKE_SOUNDS[0]);
-    private SoundEffect backgroundMusic = new SoundEffect("C:/Users/Nikolas/Documents/code/Math 271/res/" + BACKGROUND_MUSIC[0]);
-    private SoundEffect introMusic = new SoundEffect("C:/Users/Nikolas/Documents/code/Math 271/res/" + INTRO_MUSIC[0]);
-    private SoundEffect endSound = new SoundEffect("C:/Users/Nikolas/Documents/code/Math 271/res/" + END_SOUNDS[0]);
-    private SoundEffect pingSound = new SoundEffect("C:/Users/Nikolas/Documents/code/Math 271/res/" + PING_SOUNDS[0]);
-    private SoundEffect reloadSound = new SoundEffect("C:/Users/Nikolas/Documents/code/Math 271/res/" + RELOAD_SOUNDS[0]);
+    private int[] curSounds = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
+    private SoundEffect explosionSound = new SoundEffect("res/" + EXPLOSION_SOUNDS[0]);
+    private SoundEffect shootingSound = new SoundEffect("res/" + SHOOTING_SOUNDS[0]);
+    private SoundEffect nukeSound = new SoundEffect("res/" + NUKE_SOUNDS[0]);
+    private SoundEffect backgroundMusic = new SoundEffect("res/" + BACKGROUND_MUSIC[0]);
+    private SoundEffect introMusic = new SoundEffect("res/" + INTRO_MUSIC[0]);
+    private SoundEffect endSound = new SoundEffect("res/" + END_SOUNDS[0]);
+    private SoundEffect pingSound = new SoundEffect("res/" + PING_SOUNDS[0]);
+    private SoundEffect reloadSound = new SoundEffect("res/" + RELOAD_SOUNDS[0]);
     private Random rng;
     private boolean stopped;
     private int enemySpeed;
@@ -72,6 +78,66 @@ public class MCWindow extends JPanel{
     public void slowDown(){
         playerSpeed--;
         enemySpeed--;
+    }
+
+    /**
+     * Changes a type of sound to the next one in its list
+     * @param type The type of sound to change
+     */
+    public void nextSound(int type){
+        curSounds[type]++;
+        switch(type){
+            case 0:
+                if(curSounds[type] == BACKGROUND_MUSIC.length){
+                    curSounds[type] = 0;
+                }
+                backgroundMusic.stopPlayback();
+                backgroundMusic.setFile("res/" + BACKGROUND_MUSIC[curSounds[type]]);
+                backgroundMusic.play();
+                break;
+            case 1:
+                if(curSounds[type] == INTRO_MUSIC.length){
+                    curSounds[type] = 0;
+                }
+                introMusic.setFile("res/" + INTRO_MUSIC[curSounds[type]]);
+                break;
+            case 2:
+                if(curSounds[type] == SHOOTING_SOUNDS.length){
+                    curSounds[type] = 0;
+                }
+                shootingSound.setFile("res/" + SHOOTING_SOUNDS[curSounds[type]]);
+                break;
+            case 3:
+                if(curSounds[type] == EXPLOSION_SOUNDS.length){
+                    curSounds[type] = 0;
+                }
+                explosionSound.setFile("res/" + EXPLOSION_SOUNDS[curSounds[type]]);
+                break;
+            case 4:
+                if(curSounds[type] == RELOAD_SOUNDS.length){
+                    curSounds[type] = 0;
+                }
+                reloadSound.setFile("res/" + RELOAD_SOUNDS[curSounds[type]]);
+                break;
+            case 5:
+                if(curSounds[type] == NUKE_SOUNDS.length){
+                    curSounds[type] = 0;
+                }
+                nukeSound.setFile("res/" + NUKE_SOUNDS[curSounds[type]]);
+                break;
+            case 6:
+                if(curSounds[type] == PING_SOUNDS.length){
+                    curSounds[type] = 0;
+                }
+                pingSound.setFile("res/" + PING_SOUNDS[curSounds[type]]);
+                break;
+            case 7:
+            if(curSounds[type] == INTRO_MUSIC.length){
+                curSounds[type] = 0;
+            }
+            introMusic.setFile("res/" + INTRO_MUSIC[curSounds[type]]);
+            break;
+        }
     }
 
     /**
@@ -281,7 +347,7 @@ public class MCWindow extends JPanel{
         int w = getWidth();
         int h = getHeight();
         
-        g2.drawImage(new ImageIcon("C:/Users/Nikolas/Documents/code/Math 271/res/Background.png").getImage(), 0, 0, w, h, null);
+        g2.drawImage(new ImageIcon("res/Background.png").getImage(), 0, 0, w, h, null);
         
         g2.setColor(Color.GREEN);
         int[][] offsets = new int[][]{{0, 0, w/20, w/10, 3*w/20, w/5, 9*w/20, w/2, 11*w/20, 12*w/20, 17*w/20, 18*w/20, 19*w/20, w, w},{h, h-(h/10), h-(h/10), h-(h/5), h-(h/5), h-(h/10), h-(h/10), h-(h/5), h-(h/5), h-(h/10), h-(h/10), h-(h/5), h-(h/5), h-(h/10), h}};
@@ -308,9 +374,9 @@ public class MCWindow extends JPanel{
         }
         g2.drawString("Score: " + Integer.toString(score), w/2 - w/10, h/20);
         
-        g2.drawImage(new ImageIcon("C:/Users/Nikolas/Documents/code/Math 271/res/Shooter.png").getImage(), offsets[0][3], h-(h/4), w/20, h/25, null);
-        g2.drawImage(new ImageIcon("C:/Users/Nikolas/Documents/code/Math 271/res/Shooter.png").getImage(), offsets[0][7], h-(h/4), w/20, h/25, null);
-        g2.drawImage(new ImageIcon("C:/Users/Nikolas/Documents/code/Math 271/res/Shooter.png").getImage(), offsets[0][11], h-(h/4), w/20, h/25, null);
+        g2.drawImage(new ImageIcon("res/Shooter.png").getImage(), offsets[0][3], h-(h/4), w/20, h/25, null);
+        g2.drawImage(new ImageIcon("res/Shooter.png").getImage(), offsets[0][7], h-(h/4), w/20, h/25, null);
+        g2.drawImage(new ImageIcon("res/Shooter.png").getImage(), offsets[0][11], h-(h/4), w/20, h/25, null);
 
         g2.setColor(Color.PINK);
         for(Explosion e: activeExplosions){
