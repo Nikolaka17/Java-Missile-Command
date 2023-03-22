@@ -3,6 +3,9 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
+/**
+ * Class that represents a missile for the missile command game
+ */
 public class Missile extends Polygon{
     private Point target;
     private double heading;
@@ -14,6 +17,14 @@ public class Missile extends Polygon{
     private int dy;
     private int dx;
     
+    /**
+     * Constructor to create a player missile
+     * @param x The x value of the missiles top left point
+     * @param y The y value of the missiles top left point
+     * @param l The length of each segment of the missile
+     * @param v The velocity of the missile
+     * @param t The target for the missile to shoot to
+     */
     public Missile(int x, int y, int l, int v, Point t){
         target = t;
         npoints = 10;
@@ -60,11 +71,23 @@ public class Missile extends Polygon{
         iter = 0;
     }
 
+    /**
+     * Constructor to create an enemy missile
+     * @param x The x value of the missiles top left point
+     * @param y The y value of the missiles top left point
+     * @param l The length of each segment of the missile
+     * @param v The velocity of the missile
+     * @param t The target for the missile to shoot to
+     * @param e A boolean representing if the missile is an enemy missile
+     */
     public Missile(int x, int y, int l, int v, Point t, boolean e){
         this(x, y, l, v, t);
         enemy = e;
     }
     
+    /**
+     * Moves the missile towards the target
+     */
     public void move(){
         dx = (int)(velocity * Math.sin(heading));
         dy = (int)(velocity * Math.cos(heading));
@@ -82,38 +105,75 @@ public class Missile extends Polygon{
         distance = (int)((target.getX() - xpoints[6]) * Math.cos(heading));
     }
 
-    public void add(int x, int y){
+    /**
+     * Adds a spot to the missiles trail
+     * @param x The x value of the spot
+     * @param y The y value of the spot
+     */
+    private void add(int x, int y){
         spots.add(new Rectangle(x, y, 5, 5));
     }
     
+    /**
+     * Returns the location of the front of the missile
+     * @return A point with the x and y value of the head of the missile
+     */
     public Point getHead(){
         return new Point(xpoints[6], ypoints[6]);
     }
     
+    /**
+     * Returns the direction of the missile
+     * @return The direction of the missile pointing from its current location to the target
+     */
     public double getHeading(){
         return heading;
     }
     
+    /**
+     * Returns the location of the target of the missile
+     * @return A point with the x and y value of the target of the missile
+     */
     public Point getTarget(){
         return target;
     }
     
+    /**
+     * Checks if the missile is at or close enough to the target to explode
+     * @return A boolean representing if the missile is at its target
+     */
     public boolean atTarget(){
         return contains(target.getX(), target.getY()) || (Math.abs(distance) <= Math.abs(dy) && Math.abs(distance) <= Math.abs(dx));
     }
     
+    /**
+     * Returns the location of the back of the missile
+     * @return A point with the x and y value of the tail of the missile
+     */
     public Point getTail(){
         return new Point(xpoints[1], ypoints[1]);
     }
 
+    /**
+     * Gets the x value of the center of the missile
+     * @return The center x value of the missile
+     */
     public int getCenterX(){
         return xpoints[2] - ((xpoints[2] - xpoints[0])/2);
     }
 
+    /**
+     * Gets the y value of the center of the missile
+     * @return The center y value of the missile
+     */
     public int getCenterY(){
         return ypoints[7] - ((ypoints[7] - ypoints[0])/2);
     }
 
+    /**
+     * Checks if the missile is an enemy or player missile
+     * @return A boolean representing if the missile is an enemy missile
+     */
     public boolean isEnemy(){
         return enemy;
     }
