@@ -1,7 +1,5 @@
 import javax.swing.JPanel;
-
 import javax.swing.ImageIcon;
-
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Color;
@@ -9,11 +7,13 @@ import java.awt.Polygon;
 import java.awt.Font;
 import java.awt.Point;
 import java.awt.Rectangle;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
+/**
+ * Class that holds the screen of the missile command game
+ */
 public class MCWindow extends JPanel{
     private ArrayList<City> cities = new ArrayList<City>();
     private int[] missileCount = new int[]{10, 10, 10};
@@ -28,39 +28,55 @@ public class MCWindow extends JPanel{
     private static final String[] PING_SOUNDS = new String[]{"PingSound1.wav", "PingSound2.wav"};
     private static final String[] RELOAD_SOUNDS = new String[]{"ReloadSound1.wav", "ReloadSound2.wav"};
     private static final String[] SHOOTING_SOUNDS = new String[]{"ShootingSound1.wav", "ShootingSound2.wav"};
-    private SoundEffect explosionSound = new SoundEffect("res/" + EXPLOSION_SOUNDS[0]);
-    private SoundEffect shootingSound = new SoundEffect("res/" + SHOOTING_SOUNDS[0]);
-    private SoundEffect nukeSound = new SoundEffect("res/" + NUKE_SOUNDS[0]);
-    private SoundEffect backgroundMusic = new SoundEffect("res/" + BACKGROUND_MUSIC[0]);
-    private SoundEffect introMusic = new SoundEffect("res/" + INTRO_MUSIC[0]);
-    private SoundEffect endSound = new SoundEffect("res/" + END_SOUNDS[0]);
-    private SoundEffect pingSound = new SoundEffect("res/" + PING_SOUNDS[0]);
-    private SoundEffect reloadSound = new SoundEffect("res/" + RELOAD_SOUNDS[0]);
+    private SoundEffect explosionSound = new SoundEffect("C:/Users/Nikolas/Documents/code/Math 271/res/" + EXPLOSION_SOUNDS[0]);
+    private SoundEffect shootingSound = new SoundEffect("C:/Users/Nikolas/Documents/code/Math 271/res/" + SHOOTING_SOUNDS[0]);
+    private SoundEffect nukeSound = new SoundEffect("C:/Users/Nikolas/Documents/code/Math 271/res/" + NUKE_SOUNDS[0]);
+    private SoundEffect backgroundMusic = new SoundEffect("C:/Users/Nikolas/Documents/code/Math 271/res/" + BACKGROUND_MUSIC[0]);
+    private SoundEffect introMusic = new SoundEffect("C:/Users/Nikolas/Documents/code/Math 271/res/" + INTRO_MUSIC[0]);
+    private SoundEffect endSound = new SoundEffect("C:/Users/Nikolas/Documents/code/Math 271/res/" + END_SOUNDS[0]);
+    private SoundEffect pingSound = new SoundEffect("C:/Users/Nikolas/Documents/code/Math 271/res/" + PING_SOUNDS[0]);
+    private SoundEffect reloadSound = new SoundEffect("C:/Users/Nikolas/Documents/code/Math 271/res/" + RELOAD_SOUNDS[0]);
     private Random rng;
     private boolean stopped;
     private int enemySpeed;
     private int playerSpeed;
     
+    /**
+     * Default constructor for the class. Sets up a new game.
+     */
     public MCWindow(){
         super();
         setBackground(Color.BLACK);
         backgroundMusic.play();
     }
 
+    /**
+     * Getter for the players score
+     * @return The players current score
+     */
     public int getScore(){
         return score;
     }
 
+    /**
+     * Increases the speed for both the player and enemy missiles
+     */
     public void speedUp(){
         playerSpeed++;
         enemySpeed++;
     }
 
+    /**
+     * Decreases the speed for both the player and enemy missiles
+     */
     public void slowDown(){
         playerSpeed--;
         enemySpeed--;
     }
 
+    /**
+     * Resets the players ammo to 10
+     */
     public void reload(){
         reloadSound.play();
         missileCount[0] = 10;
@@ -68,6 +84,9 @@ public class MCWindow extends JPanel{
         missileCount[2] = 10;
     }
 
+    /**
+     * Blows up all missiles on screen
+     */
     public void explodeAll(){
         Iterator<Missile> mit = activeMissiles.iterator();
         while(mit.hasNext()){
@@ -77,6 +96,9 @@ public class MCWindow extends JPanel{
         }
     }
 
+    /**
+     * Resets the game for a replay
+     */
     public void setup(){
         introMusic.play();
         missileCount = new int[]{10, 10, 10};
@@ -99,6 +121,9 @@ public class MCWindow extends JPanel{
         cities.add(new City(3*w/5 + w/6, h - (h/10) - (w/24), w/192));
     }
     
+    /**
+     * Moves, grows, and checks missiles and explosions to update the screen each frame of the game
+     */
     public void update(){
         Iterator<Missile> mit = activeMissiles.iterator();
         while(mit.hasNext()){
@@ -148,6 +173,11 @@ public class MCWindow extends JPanel{
         repaint();
     }
 
+    /**
+     * Fires a missile to the designated location
+     * @param x The target x value
+     * @param y The target y value
+     */
     public void shoot(int x, int y){
         int w = getWidth();
         int h = getHeight();
@@ -183,16 +213,28 @@ public class MCWindow extends JPanel{
         shootingSound.play();
     }
 
+    /**
+     * Causes an explosion at a location
+     * @param x The locations x value
+     * @param y The locations y value
+     */
     public void explode(int x, int y){
         activeExplosions.add(new Explosion(x, y, 10));
         explosionSound.play();
     }
 
+    /**
+     * Nukes the screen
+     */
     public void nuke(){
         nukeSound.play();
         activeExplosions.add(new Explosion(500, 200, 10, 150));
     }
 
+    /**
+     * Spawns an enemy at a random location with a set of odds
+     * @param b An override to garentee a spawn of a missile
+     */
     public void spawnEnemy(boolean b){
         if(b || rng.nextInt(20) > 15 - Math.floor((double) score / 1000)){
             activeMissiles.add(new Missile(rng.nextInt(getWidth()), 0, 10, enemySpeed, cities.get(rng.nextInt(cities.size())).getHead(), true));
@@ -200,6 +242,10 @@ public class MCWindow extends JPanel{
         }
     }
 
+    /**
+     * Tests if the game is done
+     * @return A boolean representing if the game is over
+     */
     public boolean gameOver(){
         if(cities.size() == 0 && !stopped){
             endSound.play();
@@ -208,14 +254,25 @@ public class MCWindow extends JPanel{
         return false;
     }
 
+    /**
+     * Checks if the player has no more ammo
+     * @return A boolean representing if the player has more than zero missiles
+     */
     public boolean outOfMissiles(){
         return missileCount[0] + missileCount[1] + missileCount[2] == 0;
     }
 
+    /**
+     * Stops the game from being able to be finished
+     */
     public void pause(){
         stopped = true;
     }
 
+    /**
+     * Draws all elements onto the screen
+     * @param g The graphics to use to draw
+     */
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
@@ -224,7 +281,7 @@ public class MCWindow extends JPanel{
         int w = getWidth();
         int h = getHeight();
         
-        g2.drawImage(new ImageIcon("res/Background.png").getImage(), 0, 0, w, h, null);
+        g2.drawImage(new ImageIcon("C:/Users/Nikolas/Documents/code/Math 271/res/Background.png").getImage(), 0, 0, w, h, null);
         
         g2.setColor(Color.GREEN);
         int[][] offsets = new int[][]{{0, 0, w/20, w/10, 3*w/20, w/5, 9*w/20, w/2, 11*w/20, 12*w/20, 17*w/20, 18*w/20, 19*w/20, w, w},{h, h-(h/10), h-(h/10), h-(h/5), h-(h/5), h-(h/10), h-(h/10), h-(h/5), h-(h/5), h-(h/10), h-(h/10), h-(h/5), h-(h/5), h-(h/10), h}};
@@ -251,9 +308,9 @@ public class MCWindow extends JPanel{
         }
         g2.drawString("Score: " + Integer.toString(score), w/2 - w/10, h/20);
         
-        g2.drawImage(new ImageIcon("res/Shooter.png").getImage(), offsets[0][3], h-(h/4), w/20, h/25, null);
-        g2.drawImage(new ImageIcon("res/Shooter.png").getImage(), offsets[0][7], h-(h/4), w/20, h/25, null);
-        g2.drawImage(new ImageIcon("res/Shooter.png").getImage(), offsets[0][11], h-(h/4), w/20, h/25, null);
+        g2.drawImage(new ImageIcon("C:/Users/Nikolas/Documents/code/Math 271/res/Shooter.png").getImage(), offsets[0][3], h-(h/4), w/20, h/25, null);
+        g2.drawImage(new ImageIcon("C:/Users/Nikolas/Documents/code/Math 271/res/Shooter.png").getImage(), offsets[0][7], h-(h/4), w/20, h/25, null);
+        g2.drawImage(new ImageIcon("C:/Users/Nikolas/Documents/code/Math 271/res/Shooter.png").getImage(), offsets[0][11], h-(h/4), w/20, h/25, null);
 
         g2.setColor(Color.PINK);
         for(Explosion e: activeExplosions){
