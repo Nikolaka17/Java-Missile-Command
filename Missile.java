@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 /**
  * Class that represents a missile for the missile command game
+ * @see MissileCommand
+ * @see MCWindow
  */
 public class Missile extends Polygon{
     private Point target;
