@@ -42,6 +42,9 @@ public class SoundEffect{
     public void setFile(String path){
         try{
             File file = new File(path);
+            if(isPlaying()){
+                stopPlayback();
+            }
             AudioInputStream sound = AudioSystem.getAudioInputStream(file);
             clip = AudioSystem.getClip();
             clip.open(sound);
