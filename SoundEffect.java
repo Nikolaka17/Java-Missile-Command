@@ -7,7 +7,15 @@ import java.io.File;
  * A class that holds a sound byte to play
  */
 public class SoundEffect{
-    Clip clip;
+    private Clip clip;
+    private boolean isLooping = false;
+
+    /**
+     * Constructor to make a sound effect without a sound file
+     */
+    public SoundEffect(){
+        clip = null;
+    }
 
     /**
      * Constructor to make a sound effect with a specified file
@@ -15,6 +23,16 @@ public class SoundEffect{
      */
     public SoundEffect(String path){
         setFile(path);
+    }
+
+    /**
+     * Construtor to create a sound effect that loops
+     * @param path The file to use as the sound
+     * @param loops A boolean representing if the sound should loop
+     */
+    public SoundEffect(String path, boolean loops){
+        setFile(path);
+        isLooping = loops;
     }
 
     /**
@@ -37,6 +55,25 @@ public class SoundEffect{
      */
     public void play(){
         clip.setFramePosition(0);
-        clip.start();
+        if(isLooping){
+            clip.loop(-1);
+        }else{
+            clip.start();
+        }
+    }
+
+    /**
+     * Stops playing the sound effect
+     */
+    public void stopPlayback(){
+        clip.stop();
+    }
+
+    /**
+     * Tells if the sound effect is currently playing
+     * @return A boolean representing if the sound effect is active
+     */
+    public boolean isPlaying(){
+        return clip.isRunning();
     }
 }
