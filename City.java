@@ -3,6 +3,8 @@ import java.awt.Point;
 
 /**
  * A class representing the cities for the missile command game
+ * @see MissileCommand
+ * @see MCWindow
  */
 public class City extends Polygon{
     
