@@ -2,6 +2,8 @@ import java.awt.geom.Ellipse2D;
 
 /**
  * A class that represents an explosion for the missile command
+ * @see MissileCommand
+ * @see MCWindow
  */
 public class Explosion extends Ellipse2D.Double{
     private int iterNum = 0;
