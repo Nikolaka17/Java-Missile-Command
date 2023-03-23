@@ -37,7 +37,7 @@ public class MCWindow extends JPanel{
     private SoundEffect explosionSound = new SoundEffect("res/" + EXPLOSION_SOUNDS[0]);
     private SoundEffect shootingSound = new SoundEffect("res/" + SHOOTING_SOUNDS[0]);
     private SoundEffect nukeSound = new SoundEffect("res/" + NUKE_SOUNDS[0]);
-    private SoundEffect backgroundMusic = new SoundEffect("res/" + BACKGROUND_MUSIC[0]);
+    private SoundEffect backgroundMusic = new SoundEffect("res/" + BACKGROUND_MUSIC[0], true);
     private SoundEffect introMusic = new SoundEffect("res/" + INTRO_MUSIC[0]);
     private SoundEffect endSound = new SoundEffect("res/" + END_SOUNDS[0]);
     private SoundEffect pingSound = new SoundEffect("res/" + PING_SOUNDS[0]);
