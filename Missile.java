@@ -104,7 +104,7 @@ public class Missile extends Polygon{
         translate(dy, dx);
         this.invalidate();
         heading = Math.atan2((double)(target.getY() - ypoints[6]),(double)(target.getX() - xpoints[6]));
-        distance = (int)((target.getX() - xpoints[6]) * Math.cos(heading));
+        distance = (int) Math.abs(target.getY() - ypoints[6]);
     }
 
     /**
@@ -145,7 +145,7 @@ public class Missile extends Polygon{
      * @return A boolean representing if the missile is at its target
      */
     public boolean atTarget(){
-        return contains(target.getX(), target.getY()) || (Math.abs(distance) <= Math.abs(dy) && Math.abs(distance) <= Math.abs(dx));
+        return contains(target.getX(), target.getY()) || (distance <= Math.abs(dy));
     }
     
     /**
