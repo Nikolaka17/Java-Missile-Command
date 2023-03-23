@@ -132,10 +132,10 @@ public class MCWindow extends JPanel{
                 pingSound.setFile("res/" + PING_SOUNDS[curSounds[type]]);
                 break;
             case 7:
-            if(curSounds[type] == INTRO_MUSIC.length){
-                curSounds[type] = 0;
-            }
-            introMusic.setFile("res/" + INTRO_MUSIC[curSounds[type]]);
+                if(curSounds[type] == END_SOUNDS.length){
+                    curSounds[type] = 0;
+                }
+                endSound.setFile("res/" + END_SOUNDS[curSounds[type]]);
             break;
         }
     }
@@ -314,6 +314,12 @@ public class MCWindow extends JPanel{
      */
     public boolean gameOver(){
         if(cities.size() == 0 && !stopped){
+            backgroundMusic.stopPlayback();
+            introMusic.stopPlayback();
+            shootingSound.stopPlayback();
+            explosionSound.stopPlayback();
+            reloadSound.stopPlayback();
+            pingSound.stopPlayback();
             endSound.play();
             return true;
         }
