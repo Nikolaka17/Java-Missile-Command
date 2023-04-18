@@ -20,11 +20,12 @@ import java.util.Random;
  * @see SoundEffect
  */
 public class MCWindow extends JPanel{
-    private ArrayList<City> cities = new ArrayList<City>();
-    private int[] missileCount = new int[]{10, 10, 10};
-    private ArrayList<Missile> activeMissiles = new ArrayList<Missile>();
-    private ArrayList<Explosion> activeExplosions = new ArrayList<Explosion>();
-    private int score;
+    private transient ArrayList<City> cities = new ArrayList<City>();
+    private transient int[] missileCount = new int[]{10, 10, 10};
+    private transient ArrayList<Missile> activeMissiles = new ArrayList<Missile>();
+    private transient ArrayList<Explosion> activeExplosions = new ArrayList<Explosion>();
+    private transient int score;
+    private int highScore;
     private static final String[] BACKGROUND_MUSIC = new String[]{"BackgroundMusic1.wav", "BackgroundMusic2.wav", "BackgroundMusic3.wav", "BackgroundMusic4.wav", "BackgroundMusic5.wav", "BackgroundMusic6.wav", "BackgroundMusic7.wav", "BackgroundMusic8.wav", "BackgroundMusic9.wav", "BackgroundMusic10.wav"};
     private static final String[] END_SOUNDS = new String[]{"EndSound1.wav", "EndSound2.wav", "EndSound3.wav", "WinSound1.wav", "WinSound2.wav"};
     private static final String[] EXPLOSION_SOUNDS = new String[]{"ExplosionSound.wav"};
@@ -37,15 +38,16 @@ public class MCWindow extends JPanel{
     private SoundEffect explosionSound = new SoundEffect("res/" + EXPLOSION_SOUNDS[0]);
     private SoundEffect shootingSound = new SoundEffect("res/" + SHOOTING_SOUNDS[0]);
     private SoundEffect nukeSound = new SoundEffect("res/" + NUKE_SOUNDS[0]);
-    private SoundEffect backgroundMusic = new SoundEffect("res/" + BACKGROUND_MUSIC[0], true);
+    private SoundEffect backgroundMusic = new SoundEffect("res/" + BACKGROUND_MUSIC[0]);
     private SoundEffect introMusic = new SoundEffect("res/" + INTRO_MUSIC[0]);
     private SoundEffect endSound = new SoundEffect("res/" + END_SOUNDS[0]);
     private SoundEffect pingSound = new SoundEffect("res/" + PING_SOUNDS[0]);
     private SoundEffect reloadSound = new SoundEffect("res/" + RELOAD_SOUNDS[0]);
-    private Random rng;
-    private boolean stopped;
-    private int enemySpeed;
-    private int playerSpeed;
+    private transient Random rng;
+    private transient boolean stopped;
+    private transient int enemySpeed;
+    private transient int playerSpeed;
+    private long serialVersionUID = 1L;
     
     /**
      * Default constructor for the class. Sets up a new game.
