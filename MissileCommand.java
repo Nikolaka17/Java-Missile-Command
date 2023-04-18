@@ -8,6 +8,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 import javax.swing.JOptionPane;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 
 /**
  * Main class that runs a game of missile command
@@ -25,7 +30,7 @@ public class MissileCommand {
     
     public static void main(String[] args){
         JFrame window = new JFrame();
-        MCWindow panel = new MCWindow();
+        MCWindow panel = load("save.txt");
         Timer onTick = new Timer(20, new ActionListener(){@Override public void actionPerformed(ActionEvent e){panel.update();}});
         Timer enemySpawner = new Timer(1000, new ActionListener(){@Override public void actionPerformed(ActionEvent e){panel.spawnEnemy(hellfire);}});
         Timer screenClearer = new Timer(1, new ActionListener(){@Override public void actionPerformed(ActionEvent e){if(y<=800){panel.explode(x,y);x+=50;if(x>1000){x=0;y+=50;}}}});
@@ -36,7 +41,8 @@ public class MissileCommand {
                     onTick.stop();
                     enemySpawner.stop();
                     panel.pause();
-                    int choice = JOptionPane.showConfirmDialog(window, "Congrats you scored: " + panel.getScore() + "\n\nRestart?", "Game Over", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, new ImageIcon("C:/Users/Nikolas/Documents/code/Math 271/res/Icon.png"));
+                    int choice = JOptionPane.showConfirmDialog(window, "Congrats you scored: " + panel.getScore() + "\nThe high score is " + panel.getHighScore() + "\n\nRestart?", "Game Over", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, new ImageIcon("C:/Users/Nikolas/Documents/code/Math 271/res/Icon.png"));
+                    save(panel);
                     if(choice == JOptionPane.YES_OPTION){
                         panel.setup();
                         onTick.start();
@@ -111,5 +117,43 @@ public class MissileCommand {
         onTick.start();
         winChecker.start();
         enemySpawner.start();
+    }
+
+    /**
+     * Serializes the current state of the game
+     * @param game The MCWindow to serialize
+     * @see MCWindow
+     */
+    private static void save(MCWindow game){
+        try{
+            PrintWriter writer = new PrintWriter("save.txt");
+            writer.print("");
+            writer.close();
+            FileOutputStream fStream = new FileOutputStream("save.txt");
+            ObjectOutputStream oStream = new ObjectOutputStream(fStream);
+            oStream.writeObject(game);
+            fStream.close();
+            oStream.close();
+        }catch(Exception e){
+
+        }
+    }
+
+    /**
+     * Deserializes the serialized state of the game
+     * @param file The file to read from
+     * @return A MCWindow loaded from the file
+     */
+    private static MCWindow load(String file){
+        try{
+            FileInputStream fStream = new FileInputStream(file);
+            ObjectInputStream oStream = new ObjectInputStream(fStream);
+            MCWindow result = (MCWindow) oStream.readObject();
+            fStream.close();
+            oStream.close();
+            return result;
+        }catch(Exception e){
+            return new MCWindow();
+        }
     }
 }
