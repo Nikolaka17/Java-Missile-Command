@@ -35,14 +35,14 @@ public class MCWindow extends JPanel{
     private static final String[] RELOAD_SOUNDS = new String[]{"ReloadSound1.wav", "ReloadSound2.wav"};
     private static final String[] SHOOTING_SOUNDS = new String[]{"ShootingSound1.wav", "ShootingSound2.wav"};
     private int[] curSounds = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
-    private SoundEffect explosionSound = new SoundEffect("res/" + EXPLOSION_SOUNDS[0]);
-    private SoundEffect shootingSound = new SoundEffect("res/" + SHOOTING_SOUNDS[0]);
-    private SoundEffect nukeSound = new SoundEffect("res/" + NUKE_SOUNDS[0]);
-    private SoundEffect backgroundMusic = new SoundEffect("res/" + BACKGROUND_MUSIC[0]);
-    private SoundEffect introMusic = new SoundEffect("res/" + INTRO_MUSIC[0]);
-    private SoundEffect endSound = new SoundEffect("res/" + END_SOUNDS[0]);
-    private SoundEffect pingSound = new SoundEffect("res/" + PING_SOUNDS[0]);
-    private SoundEffect reloadSound = new SoundEffect("res/" + RELOAD_SOUNDS[0]);
+    private transient SoundEffect explosionSound = new SoundEffect("res/" + EXPLOSION_SOUNDS[0]);
+    private transient SoundEffect shootingSound = new SoundEffect("res/" + SHOOTING_SOUNDS[0]);
+    private transient SoundEffect nukeSound = new SoundEffect("res/" + NUKE_SOUNDS[0]);
+    private transient SoundEffect backgroundMusic = new SoundEffect("res/" + BACKGROUND_MUSIC[0]);
+    private transient SoundEffect introMusic = new SoundEffect("res/" + INTRO_MUSIC[0]);
+    private transient SoundEffect endSound = new SoundEffect("res/" + END_SOUNDS[0]);
+    private transient SoundEffect pingSound = new SoundEffect("res/" + PING_SOUNDS[0]);
+    private transient SoundEffect reloadSound = new SoundEffect("res/" + RELOAD_SOUNDS[0]);
     private transient Random rng;
     private transient boolean stopped;
     private transient int enemySpeed;
@@ -134,10 +134,10 @@ public class MCWindow extends JPanel{
                 pingSound.setFile("res/" + PING_SOUNDS[curSounds[type]]);
                 break;
             case 7:
-                if(curSounds[type] == END_SOUNDS.length){
-                    curSounds[type] = 0;
-                }
-                endSound.setFile("res/" + END_SOUNDS[curSounds[type]]);
+            if(curSounds[type] == INTRO_MUSIC.length){
+                curSounds[type] = 0;
+            }
+            introMusic.setFile("res/" + INTRO_MUSIC[curSounds[type]]);
             break;
         }
     }
@@ -168,6 +168,14 @@ public class MCWindow extends JPanel{
      * Resets the game for a replay
      */
     public void setup(){
+        explosionSound = new SoundEffect("res/" + EXPLOSION_SOUNDS[curSounds[3]]);
+        shootingSound = new SoundEffect("res/" + SHOOTING_SOUNDS[curSounds[2]]);
+        nukeSound = new SoundEffect("res/" + NUKE_SOUNDS[curSounds[5]]);
+        backgroundMusic = new SoundEffect("res/" + BACKGROUND_MUSIC[curSounds[0]]);
+        introMusic = new SoundEffect("res/" + INTRO_MUSIC[curSounds[1]]);
+        endSound = new SoundEffect("res/" + END_SOUNDS[curSounds[7]]);
+        pingSound = new SoundEffect("res/" + PING_SOUNDS[curSounds[6]]);
+        reloadSound = new SoundEffect("res/" + RELOAD_SOUNDS[curSounds[4]]);
         introMusic.play();
         missileCount = new int[]{10, 10, 10};
         score = 0;
@@ -175,9 +183,10 @@ public class MCWindow extends JPanel{
         playerSpeed = 5;
         rng = new Random();
         stopped = false;
-        cities.clear();
-        activeMissiles.clear();
-        activeExplosions.clear();
+        cities = new ArrayList<City>();
+        missileCount = new int[]{10, 10, 10};
+        activeMissiles = new ArrayList<Missile>();
+        activeExplosions = new ArrayList<Explosion>();
 
         int w = getWidth();
         int h = getHeight();
@@ -316,12 +325,6 @@ public class MCWindow extends JPanel{
      */
     public boolean gameOver(){
         if(cities.size() == 0 && !stopped){
-            backgroundMusic.stopPlayback();
-            introMusic.stopPlayback();
-            shootingSound.stopPlayback();
-            explosionSound.stopPlayback();
-            reloadSound.stopPlayback();
-            pingSound.stopPlayback();
             endSound.play();
             return true;
         }
@@ -341,6 +344,24 @@ public class MCWindow extends JPanel{
      */
     public void pause(){
         stopped = true;
+    }
+
+    /**
+     * Returns the highest score achieved
+     * @return The high score for this game instance
+     */
+    public int getHighScore(){
+        return highScore;
+    }
+
+    /**
+     * Updates the high score
+     * @param i The new high score
+     */
+    public void setHighScore(int i){
+        if(i > highScore){
+            highScore = i;
+        }
     }
 
     /**
