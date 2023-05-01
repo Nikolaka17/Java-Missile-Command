@@ -2,13 +2,15 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import java.io.File;
+import java.io.Serializable;
 
 /**
  * A class that holds a sound byte to play
  */
-public class SoundEffect{
-    private Clip clip;
+public class SoundEffect implements Serializable{
+    private transient Clip clip;
     private boolean isLooping = false;
+    private long serialVersionUID = 1L;
 
     /**
      * Constructor to make a sound effect without a sound file
