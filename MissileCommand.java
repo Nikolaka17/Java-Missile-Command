@@ -12,7 +12,6 @@ import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 
 /**
  * Main class that runs a game of missile command
@@ -42,6 +41,7 @@ public class MissileCommand {
                     enemySpawner.stop();
                     panel.pause();
                     int choice = JOptionPane.showConfirmDialog(window, "Congrats you scored: " + panel.getScore() + "\nThe high score is " + panel.getHighScore() + "\n\nRestart?", "Game Over", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, new ImageIcon("C:/Users/Nikolas/Documents/code/Math 271/res/Icon.png"));
+                    panel.setHighScore(panel.getScore());
                     save(panel);
                     if(choice == JOptionPane.YES_OPTION){
                         panel.setup();
@@ -126,16 +126,13 @@ public class MissileCommand {
      */
     private static void save(MCWindow game){
         try{
-            PrintWriter writer = new PrintWriter("save.txt");
-            writer.print("");
-            writer.close();
             FileOutputStream fStream = new FileOutputStream("save.txt");
             ObjectOutputStream oStream = new ObjectOutputStream(fStream);
             oStream.writeObject(game);
             fStream.close();
             oStream.close();
         }catch(Exception e){
-
+            
         }
     }
 
